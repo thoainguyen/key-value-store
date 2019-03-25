@@ -1,0 +1,1 @@
+/usr/bin/cc   -rdynamic CMakeFiles/exe.dir/src/bnode.c.o CMakeFiles/exe.dir/src/btree.c.o CMakeFiles/exe.dir/src/main.c.o CMakeFiles/exe.dir/src/server.c.o  -o exe 
