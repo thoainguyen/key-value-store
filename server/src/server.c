@@ -9,6 +9,7 @@
 #include <arpa/inet.h>
 #include <sys/time.h>
 #include <stdbool.h> 
+#include <fcntl.h>
 
 #include "btree.h"
 
@@ -24,7 +25,9 @@ bool handler(char* resquest, char* response);
 
 int main(int argc, char *argv[])
 {
+	// tree = create_empty_btree(STORAGE_FILE);
 	tree = create_loading_btree(CONFIG_FILE);
+
 	int server_fd,
 		nbytes, client_fd, clientsock[10],
 		max_client = 10, select_val,
@@ -34,7 +37,7 @@ int main(int argc, char *argv[])
 	char buffer[512]; 
 	char sendmsg[512];
 
-	fd_set rfds, wfds;
+	fd_set rfds;
 
 	for (i = 0; i < max_client; i++)
 	{
@@ -55,6 +58,9 @@ int main(int argc, char *argv[])
 	server.sin_addr.s_addr = INADDR_ANY;
 	server.sin_port = htons(PORT);
 
+	int optval = 1;
+	setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+
 	/*binding the  socket*/
 	if ((bind(server_fd, (struct sockaddr *)&server, sizeof(server))) < 0)
 	{
@@ -70,6 +76,8 @@ int main(int argc, char *argv[])
 	}
 	else
 		printf("server is ready \n");
+
+	fcntl(server_fd, F_SETFL, O_NONBLOCK);
 		
 	addrlen = sizeof(server);
 
@@ -77,9 +85,7 @@ int main(int argc, char *argv[])
 	while (1)
 	{
 		FD_ZERO(&rfds);
-		FD_ZERO(&wfds);
 		FD_SET(server_fd, &rfds);
-		FD_SET(server_fd, &wfds);
 
 		max_fd = server_fd;
 
@@ -89,13 +95,12 @@ int main(int argc, char *argv[])
 			if (fd > 0)
 			{
 				FD_SET(fd, &rfds);
-				// FD_SET(fd, &wfds);
 			}
 			if (fd > max_fd)
 				max_fd = fd;
 		}
 
-		select_val = select(max_fd + 1, &rfds, NULL/*&wfds*/, NULL, NULL);
+		select_val = select(max_fd + 1, &rfds, NULL, NULL, NULL);
 
 		if (select_val < 0)
 			perror("select error \n");
@@ -135,11 +140,12 @@ int main(int argc, char *argv[])
 					close(fd);
 					clientsock[i] = 0;
 				}
-				//echo back the message that came in
+				// process on database and response back client
 				else
 				{
 					buffer[nbytes] = '\0';
 					handler(buffer, sendmsg);
+					// printf("sendmsg: `%s`\n",sendmsg);
 					sendmsg[strlen(sendmsg)] = '\n';
 					send(fd, sendmsg, strlen(sendmsg), 0);
 				}
@@ -154,6 +160,7 @@ int main(int argc, char *argv[])
 
 
 bool handler(char* resquest, char* response){
+	// printf("request: `%s`\n",resquest);
 	char p1[5], p2[128], p3[256];
 	sscanf(resquest, "%s %s %s", p1, p2, p3);
 	if(!strcmp(p1,"set")){
@@ -181,5 +188,7 @@ bool handler(char* resquest, char* response){
 		sprintf(response, "(integer) %c", c);
 		return 1;
 	}
+	
 	return 0;
 }
+

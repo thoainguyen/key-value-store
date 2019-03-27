@@ -6,5 +6,5 @@ C_FLAGS =
 
 C_DEFINES = 
 
-C_INCLUDES = -I/home/lap12448/Desktop/vng/implement-key-value-store/server/include 
+C_INCLUDES = -I/home/lap12448/Desktop/vng/implement-key-value-store/kvstore/server/include 
 

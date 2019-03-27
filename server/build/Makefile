@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lap12448/Desktop/vng/implement-key-value-store/server
+CMAKE_SOURCE_DIR = /home/lap12448/Desktop/vng/implement-key-value-store/kvstore/server
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lap12448/Desktop/vng/implement-key-value-store/server/build
+CMAKE_BINARY_DIR = /home/lap12448/Desktop/vng/implement-key-value-store/kvstore/server/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lap12448/Desktop/vng/implement-key-value-store/server/build/CMakeFiles /home/lap12448/Desktop/vng/implement-key-value-store/server/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lap12448/Desktop/vng/implement-key-value-store/kvstore/server/build/CMakeFiles /home/lap12448/Desktop/vng/implement-key-value-store/kvstore/server/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lap12448/Desktop/vng/implement-key-value-store/server/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lap12448/Desktop/vng/implement-key-value-store/kvstore/server/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named kvs-ser
+# Target rules for targets named server
 
 # Build rule for target.
-kvs-ser: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 kvs-ser
-.PHONY : kvs-ser
+server: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 server
+.PHONY : server
 
 # fast build rule for target.
-kvs-ser/fast:
-	$(MAKE) -f CMakeFiles/kvs-ser.dir/build.make CMakeFiles/kvs-ser.dir/build
-.PHONY : kvs-ser/fast
+server/fast:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/build
+.PHONY : server/fast
 
 src/bnode.o: src/bnode.c.o
 
@@ -129,7 +129,7 @@ src/bnode.o: src/bnode.c.o
 
 # target to build an object file
 src/bnode.c.o:
-	$(MAKE) -f CMakeFiles/kvs-ser.dir/build.make CMakeFiles/kvs-ser.dir/src/bnode.c.o
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/bnode.c.o
 .PHONY : src/bnode.c.o
 
 src/bnode.i: src/bnode.c.i
@@ -138,7 +138,7 @@ src/bnode.i: src/bnode.c.i
 
 # target to preprocess a source file
 src/bnode.c.i:
-	$(MAKE) -f CMakeFiles/kvs-ser.dir/build.make CMakeFiles/kvs-ser.dir/src/bnode.c.i
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/bnode.c.i
 .PHONY : src/bnode.c.i
 
 src/bnode.s: src/bnode.c.s
@@ -147,7 +147,7 @@ src/bnode.s: src/bnode.c.s
 
 # target to generate assembly for a file
 src/bnode.c.s:
-	$(MAKE) -f CMakeFiles/kvs-ser.dir/build.make CMakeFiles/kvs-ser.dir/src/bnode.c.s
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/bnode.c.s
 .PHONY : src/bnode.c.s
 
 src/btree.o: src/btree.c.o
@@ -156,7 +156,7 @@ src/btree.o: src/btree.c.o
 
 # target to build an object file
 src/btree.c.o:
-	$(MAKE) -f CMakeFiles/kvs-ser.dir/build.make CMakeFiles/kvs-ser.dir/src/btree.c.o
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/btree.c.o
 .PHONY : src/btree.c.o
 
 src/btree.i: src/btree.c.i
@@ -165,7 +165,7 @@ src/btree.i: src/btree.c.i
 
 # target to preprocess a source file
 src/btree.c.i:
-	$(MAKE) -f CMakeFiles/kvs-ser.dir/build.make CMakeFiles/kvs-ser.dir/src/btree.c.i
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/btree.c.i
 .PHONY : src/btree.c.i
 
 src/btree.s: src/btree.c.s
@@ -174,7 +174,7 @@ src/btree.s: src/btree.c.s
 
 # target to generate assembly for a file
 src/btree.c.s:
-	$(MAKE) -f CMakeFiles/kvs-ser.dir/build.make CMakeFiles/kvs-ser.dir/src/btree.c.s
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/btree.c.s
 .PHONY : src/btree.c.s
 
 src/main.o: src/main.c.o
@@ -183,7 +183,7 @@ src/main.o: src/main.c.o
 
 # target to build an object file
 src/main.c.o:
-	$(MAKE) -f CMakeFiles/kvs-ser.dir/build.make CMakeFiles/kvs-ser.dir/src/main.c.o
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/main.c.o
 .PHONY : src/main.c.o
 
 src/main.i: src/main.c.i
@@ -192,7 +192,7 @@ src/main.i: src/main.c.i
 
 # target to preprocess a source file
 src/main.c.i:
-	$(MAKE) -f CMakeFiles/kvs-ser.dir/build.make CMakeFiles/kvs-ser.dir/src/main.c.i
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/main.c.i
 .PHONY : src/main.c.i
 
 src/main.s: src/main.c.s
@@ -201,7 +201,7 @@ src/main.s: src/main.c.s
 
 # target to generate assembly for a file
 src/main.c.s:
-	$(MAKE) -f CMakeFiles/kvs-ser.dir/build.make CMakeFiles/kvs-ser.dir/src/main.c.s
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/main.c.s
 .PHONY : src/main.c.s
 
 src/server.o: src/server.c.o
@@ -210,7 +210,7 @@ src/server.o: src/server.c.o
 
 # target to build an object file
 src/server.c.o:
-	$(MAKE) -f CMakeFiles/kvs-ser.dir/build.make CMakeFiles/kvs-ser.dir/src/server.c.o
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/server.c.o
 .PHONY : src/server.c.o
 
 src/server.i: src/server.c.i
@@ -219,7 +219,7 @@ src/server.i: src/server.c.i
 
 # target to preprocess a source file
 src/server.c.i:
-	$(MAKE) -f CMakeFiles/kvs-ser.dir/build.make CMakeFiles/kvs-ser.dir/src/server.c.i
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/server.c.i
 .PHONY : src/server.c.i
 
 src/server.s: src/server.c.s
@@ -228,7 +228,7 @@ src/server.s: src/server.c.s
 
 # target to generate assembly for a file
 src/server.c.s:
-	$(MAKE) -f CMakeFiles/kvs-ser.dir/build.make CMakeFiles/kvs-ser.dir/src/server.c.s
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/server.c.s
 .PHONY : src/server.c.s
 
 # Help Target
@@ -238,7 +238,7 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... kvs-ser"
+	@echo "... server"
 	@echo "... edit_cache"
 	@echo "... src/bnode.o"
 	@echo "... src/bnode.i"

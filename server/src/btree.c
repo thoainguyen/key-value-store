@@ -25,8 +25,8 @@ void destroy_btree(B_tree* tree, char *config) {
 
 
 int find_key(B_node* node, key_type* k) {
-    int idx=0;
-    while (idx < node->num_records && LT(node->records[idx].key,k))
+    int idx = 0;
+    while (idx < node->num_records && LT(node->records[idx].key, k))
         ++idx;
     return idx;
 }
@@ -72,30 +72,41 @@ void split_child(B_tree* tree, B_node* x, int i, B_node* y) {
 
 void insert_non_full(B_tree* tree, B_node *node, Kv_pair *record) {
     
+    
     int i = node->num_records - 1;
+    int k = find_key(node, record->key);
+
+    if(k < node->num_records && EQ(node->records[k].key, record->key)){ // key is already existed
+        node->records[k] = *record;
+        write_to_file(tree, node, node->position);
+        return;
+    }
+    else
     if(node->is_leaf) {
-        while(i >=0 && GT(node->records[i].key,record->key)) {
+        while(i >= 0 && GT(node->records[i].key, record->key)) { 
             node->records[i+1] = node->records[i];
             i--;
         }
+        
         node->records[i+1] = *record;
         node->num_records++;
         write_to_file(tree, node, node->position);
     }
-    
     else {
-        while( i >= 0 && GT(node->records[i].key,record->key)) {
+        while( i >= 0 && GT(node->records[i].key, record->key)) {
             i--;
         }
+
         B_node *child = (B_node*)malloc(sizeof(B_node));
         read_from_file(tree, child, node->children[i+1]);
+
         if(child->num_records == (2*T-1)) {
             split_child(tree, node, i+1, child);
             if(LT(node->records[i+1].key, record->key)) {
                 i++;
             }
         }
-        read_from_file(tree, child, node->children[i+1]);
+
         insert_non_full(tree, child, record);
         free(child);
     }
@@ -108,7 +119,7 @@ void insert(B_tree* tree, Kv_pair *record) {
         B_node *root_node = malloc(sizeof(B_node)); 
         create_bnode(root_node, true, tree);
         root_node->records[0] = *record;
-        root_node->num_records++;
+        root_node->num_records ++;
         write_to_file(tree, root_node, root_node->position);
         free(root_node);
     }
@@ -116,25 +127,23 @@ void insert(B_tree* tree, Kv_pair *record) {
     else {
         B_node *root = malloc(sizeof(B_node));
         read_from_file(tree, root, tree->root_pos);
+
+        int r = tree->root_pos;
+
         if(root->num_records == (2*T-1)) {
 
-            B_node *new_root = malloc(sizeof(B_node)); 
-            create_bnode(new_root, false, tree);
-            new_root->children[0] = tree->root_pos;
-            split_child(tree, new_root, 0, root);
-            int i = 0;
+            B_node *s = malloc(sizeof(B_node)); 
+            create_bnode(s, false, tree);
 
-            if(LT(new_root->records[0].key, record->key)) {
-                i++;
-            }
-            
-            B_node *child = (B_node*)malloc(sizeof(B_node));
-            read_from_file(tree, child, new_root->children[i]);
-            insert_non_full(tree, child, record);
-    
-            tree->root_pos = new_root->position;        
-            write_to_file(tree, root, root->position);
-            free(new_root);
+            tree->root_pos = s->position;
+        
+            s->children[0] = r;
+
+            split_child(tree, s, 0, root);
+
+            insert_non_full(tree, s, record);
+
+            free(s);
         }
         else {
             insert_non_full(tree, root, record);
@@ -170,7 +179,9 @@ Kv_pair* search(B_tree* tree, key_type* key) {
     
     B_node* root = (B_node*)malloc(sizeof(B_node));
     read_from_file(tree, root, tree->root_pos);
-    return recursive_search(tree, key, root);
+    Kv_pair* ret = recursive_search(tree, key, root);
+    free(root);
+    return ret;
 }
 
 
@@ -188,14 +199,18 @@ Kv_pair* recursive_search(B_tree* tree, key_type* key, B_node* root) {
     else {
         B_node* child = (B_node*)malloc(sizeof(B_node));
         read_from_file(tree, child, root->children[i]);
-        return recursive_search(tree, key, child);
+        Kv_pair* ret = recursive_search(tree, key, child);
+        free(child);
+        return ret;
     }
 }
 
 bool remove0(B_tree* tree, key_type* key) {
     B_node *root = (B_node*)malloc(sizeof(B_node));
     read_from_file(tree, root, tree->root_pos);
-    return remove_bnode(tree, root, key);
+    bool ret = remove_bnode(tree, root, key);
+    free(root);
+    return ret;
 }
 
  
@@ -230,6 +245,9 @@ void merge(B_tree* tree, B_node *node, int idx) {
     write_to_file(tree, node, node->position);
     write_to_file(tree, children, children->position);
     write_to_file(tree, sibling, sibling->position);
+
+    free(children);
+    free(sibling);
 }
 
 
@@ -262,6 +280,9 @@ void borrow_from_next(B_tree* tree, B_node *node, int idx) {
     write_to_file(tree, node, node->position);
     write_to_file(tree, children, children->position);
     write_to_file(tree, sibling, sibling->position);
+    
+    free(children);
+    free(sibling);
 }
 
 
@@ -293,6 +314,9 @@ void borrow_from_prev(B_tree* tree, B_node *node, int idx) {
     write_to_file(tree, node, node->position);
     write_to_file(tree, children, children->position);
     write_to_file(tree, sibling, sibling->position);
+
+    free(children);
+    free(sibling);
 }
 
 void fill(B_tree* tree, B_node *node, int idx) {
@@ -313,6 +337,9 @@ void fill(B_tree* tree, B_node *node, int idx) {
         else
             merge(tree, node, idx-1);
     }
+
+    free(prev);
+    free(succ);
 }
 
 Kv_pair *get_successor(B_tree *tree, B_node *node, int idx) {
@@ -321,7 +348,10 @@ Kv_pair *get_successor(B_tree *tree, B_node *node, int idx) {
     read_from_file(tree, current, node->children[idx]);
     while (!current->is_leaf)
         read_from_file(tree, current, current->children[0]);
-    return &(current->records[0]);
+    Kv_pair *succ = (Kv_pair*)malloc(sizeof(Kv_pair));
+    memcpy(succ, &(current->records[0]), sizeof(Kv_pair));
+    free(current);
+    return succ;
 }
 
 Kv_pair *get_predecessor(B_tree *tree, B_node *node, int idx) {
@@ -330,7 +360,10 @@ Kv_pair *get_predecessor(B_tree *tree, B_node *node, int idx) {
     read_from_file(tree, current, node->children[idx]);
     while (!current->is_leaf)
         read_from_file(tree, current, current->children[current->num_records]);
-    return &(current->records[current->num_records-1]);
+    Kv_pair *pred = (Kv_pair*)malloc(sizeof(Kv_pair));
+    memcpy(pred,  &(current->records[current->num_records-1]), sizeof(Kv_pair));
+    free(current);
+    return pred;
 }
 
 
@@ -363,6 +396,9 @@ bool remove_from_non_leaf(B_tree* tree, B_node *node, int idx) {
     
     write_to_file(tree, children, children->position);
     write_to_file(tree, sibling, sibling->position);
+
+    free(children);
+    free(sibling);
     return res;
 }
 
@@ -379,7 +415,7 @@ bool remove_from_leaf (B_tree* tree, B_node *node, int idx) {
 bool remove_bnode(B_tree *tree, B_node *node, key_type *k) {
     int idx = find_key(node, k);
     bool res = false;
-    if (idx < node->num_records && EQ(node->records[idx].key,k)) {
+    if (idx < node->num_records && EQ(node->records[idx].key, k)) {
         if (node->is_leaf)
             res = remove_from_leaf(tree, node, idx);
         else
@@ -403,12 +439,14 @@ bool remove_bnode(B_tree *tree, B_node *node, key_type *k) {
             read_from_file(tree, sibling, node->children[idx-1]);
             remove_bnode(tree, sibling, k);
             write_to_file(tree, sibling, sibling->position);
+            free(sibling);
         }
         else{
             remove_bnode(tree, child, k);
         }
         write_to_file(tree, child, child->position);
         res = true;
+        free(child); // add
     }
     return res;
 }

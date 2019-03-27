@@ -1,1 +1,0 @@
-/usr/bin/cc   -rdynamic CMakeFiles/kvs-ser.dir/src/bnode.c.o CMakeFiles/kvs-ser.dir/src/btree.c.o CMakeFiles/kvs-ser.dir/src/main.c.o CMakeFiles/kvs-ser.dir/src/server.c.o  -o kvs-ser 
