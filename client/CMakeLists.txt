@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.9)
-project(kvs-server)
+project(kvs-cli)
 
 include_directories(include)
 
@@ -7,6 +7,6 @@ find_package (Threads)
 
 file(GLOB SOURCES "src/*.c")
 
-add_executable(server ${SOURCES})
+add_executable(client ${SOURCES})
 
-target_link_libraries (server ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries (client ${CMAKE_THREAD_LIBS_INIT})

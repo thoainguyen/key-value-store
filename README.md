@@ -11,10 +11,30 @@ $ cd server
 $ cd build
 ```
 
-* Create data file, and config file (from /build)
+* build project (from /build)
 
 ```sh
-$ touch meta.dat data.dat
+$ cmake ..
+$ make
+```
+
+* run server main function (from /build)
+
+```sh
+$ ./server
+```
+
+* run with other port
+
+```sh
+$ ./server -p 9087
+```
+
+### Client
+
+```sh
+$ cd client
+$ cd build
 ```
 
 * build project (from /build)
@@ -24,23 +44,22 @@ $ cmake ..
 $ make
 ```
 
-* run server main function
+* run server main function (from /build)
 
 ```sh
-$ ./build/kvs-ser
+$ ./client
 ```
 
-### Client
+* run with other port
 
 ```sh
-$ cd client
-$ make
+$ ./client -p 9087
 ```
 
-* run client main function
+* run with other port & host
 
 ```sh
-$ ./client 127.0.0.1
+$ ./client -p 9087 -h 10.23.0.4
 ```
 
 ### Command
@@ -48,7 +67,7 @@ $ ./client 127.0.0.1
 * `set`, `get`, `del`
 
 ```sh
-$ ./client 127.0.0.1
+$ ./client
 127.0.0.1:55000> set thoainh ThoaiNguyenHuynh
 OK
 127.0.0.1:55000> get thoainh

@@ -8,7 +8,7 @@ int main0(){
     
     //B_tree *tree = create_loading_btree(CONFIG_FILE);
     B_tree *tree = create_empty_btree(STORAGE_FILE);
-    insert0(tree, "z", "z");
+    insert0(tree, "x", "x");
     // insert0(tree, "thoainh", "Nguyen Huynh Thoai");
     // insert0(tree, "anhnq6", "Nguyen Quoc Anh");
     // insert0(tree, "nghiatdh","Ta Dang Hieu Nghia");

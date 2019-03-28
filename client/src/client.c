@@ -9,69 +9,67 @@
 #include <netdb.h>
 #include <stdbool.h>
 
-bool checkvalid(char* str);
+#include "kvstore.h"
 
-int main(int args, char *argv[])
+#define PORT 55000;
+
+bool checkvalid(char*);
+
+int main0(int argc, char *argv[])
 {
-	int peer_fd, nbytes;
-	struct sockaddr_in peer;
-	struct hostent *server_addr;
+	int peer_fd, nbytes,
+		ser_port = PORT;
+	bool ret;
 	char buffer[512];
+	char addr_name[20] = "127.0.0.1";
 
-	if ((peer_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+	if(argc == 3 || argc == 5)
 	{
-		perror("socket failed \n");
-		close(peer_fd);
-		exit(1);
+		if(!strcmp(argv[1],"-p")){
+			if((ser_port = atoi(argv[2])) <= 0){
+				perror("(error) invalid port");
+				return 1;
+			}
+		}
+		else{
+			perror("(error) invalid syntax");
+			return 1;
+		}
+		if(argc > 3){
+			if(!strcmp(argv[3], "-h")){
+				strcpy(addr_name, argv[4]);
+			}
+			else{
+				perror("(error) invalid syntax");
+				return 1;
+			}
+		}
 	}
-
-	peer.sin_family = AF_INET;
-	peer.sin_port = htons(55000);
-
-	server_addr = gethostbyname("127.0.0.1"); //localhost
-
-	memcpy(&peer.sin_addr, server_addr->h_addr, server_addr->h_length);
-
-	if (connect(peer_fd, (struct sockaddr *)&peer, sizeof(peer)) < 0)
-	{
-		perror("connect failed\n");
-		close(peer_fd);
-		exit(1);
+	else
+	if(argc != 1){
+		perror("(error) using ./client or ./client [-p <port>] [-h <host>]");
+		return 1;
 	}
-
+	peer_fd = connect_kvstore(addr_name, ser_port);
 	while (1)
 	{
 		// printf("enter the message you want to send\nsend: ");
 		memset((char *)&buffer, 0, 512);
 		
-		printf("127.0.0.1:55000> ");
+		printf("%s:%d> ", addr_name, ser_port);
 			
 		fgets(buffer, 512, stdin);
 		
-		if(buffer[strlen(buffer)-1]=='\n'){
-			buffer[strlen(buffer)-1]='\0';
-		}
-
-		if(!strlen(buffer) || !checkvalid(buffer)){
+		if(!checkvalid(buffer)) {
 			continue;
-		}
+		};
 
-		if ((nbytes = send(peer_fd, buffer, sizeof(buffer), 0)) <= 0)
-		{
-			perror("sending failed \n");
-			close(peer_fd);
-			exit(1);
-		}
-
-		if ((nbytes = recv(peer_fd, buffer, 512, 0)) < 0){
-			perror("receive failed");
-		}
-		else{
-			buffer[strcspn(buffer, "\n")] = 0;
-			printf("%s\n", buffer);
-		}
+		if(!process_kvstore(peer_fd, buffer)){
+			continue;
+		};
+		
+		printf("%s\n",buffer);
 	}
-
 	close(peer_fd);
 	return 0;
 }
@@ -79,7 +77,7 @@ int main(int args, char *argv[])
 
 bool checkvalid(char* str){
 
-	char *new = (char*)malloc(sizeof(char)*strlen(str));
+	char *new = (char*)malloc(512);
 	strcpy(new, str);
 
 	char delim[] = " ";
@@ -115,3 +113,4 @@ bool checkvalid(char* str){
 	}
 	return true;
 }
+
