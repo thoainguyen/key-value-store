@@ -47,8 +47,15 @@ Using btree disk base to implement key value store, build client server nonblock
 
 ## Dùng bugdb đối với bên thứ ba:
 
-* B1: import hai file **bugdb.h**, và **bugdb.c** vào project.
-* B2: kết nối tới database server:
+* B1: chạy chương trình bugdb phía server
+
+```sh
+kvstore/server/sbuild $ ./server
+```
+
+* B2: import hai file **bugdb.h**, và **bugdb.c** vào project.
+
+* B3: kết nối tới database server:
 
 ```c
 /* giá trị db dùng để truyền vào các interface method sau này, HOST, PORT là hostname và port của dbserver, nếu db < 0, thì có lỗi xảy ra*/

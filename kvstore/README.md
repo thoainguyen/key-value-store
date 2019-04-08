@@ -50,12 +50,12 @@ $ ./client
 
 ```sh
 $ ./client usertest
-127.0.0.1:55000> set thoainh ThoaiNguyenHuynh
+127.0.0.1:9899> set thoainh ThoaiNguyenHuynh
 OK 
-127.0.0.1:55000> get thoainh
+127.0.0.1:9899> get thoainh
 ThoaiNguyenHuynh
-127.0.0.1:55000> del thoainh
+127.0.0.1:9899> del thoainh
 (integer) 1
-127.0.0.1:55000> get thoainh
+127.0.0.1:9899> get thoainh
 (nul)
 ```
