@@ -1,11 +1,11 @@
-#ifndef BTREE_H
-#define BTREE_H
-
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
 #include "bnode.h"
+
+#ifndef BTREE_H
+#define BTREE_H
 
 #define FNAME_LENGTH 20
 

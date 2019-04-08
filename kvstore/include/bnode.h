@@ -1,13 +1,11 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include "kvpair.h"
+
 #ifndef BNODE_H
 #define BNODE_H
 
-#include <stdio.h>
-#include <stdbool.h>
-
-#include "kvpair.h"
-
-// #define T 3
-#define T 38
+#define T 20
 
 typedef struct
 {

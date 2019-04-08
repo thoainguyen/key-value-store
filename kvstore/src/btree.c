@@ -280,7 +280,6 @@ void merge(B_tree *tree, B_node *node, int idx)
     child->num_records += (sibling->num_records + 1);
     node->num_records--;
 
-
     write_to_file(tree, node, node->position);
     write_to_file(tree, child, child->position);
     write_to_file(tree, sibling, sibling->position);

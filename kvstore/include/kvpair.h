@@ -4,11 +4,8 @@
 
 #include <string.h>
 
-// #define KEY_SIZE 300
-// #define VAL_SIZE 512
-
-#define KEY_SIZE 30
-#define VAL_SIZE 20
+#define KEY_SIZE 20
+#define VAL_SIZE 80
 
 #define key_type char
 #define val_type char
