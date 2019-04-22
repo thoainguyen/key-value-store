@@ -9,6 +9,8 @@ Using btree disk base to implement key value store, build client server nonblock
 
 ## Implement Key value store
 
+> Follow [kvstore/README.md](kvstore/README.md) for run success
+
 * Project structure:
 
 ```sh
@@ -39,8 +41,8 @@ Using btree disk base to implement key value store, build client server nonblock
 * [bnode.h](./kvstore/src/bnode.c) : định nghĩa cấu trúc bnode.
 * [utils.h](./kvstore/include/utils.h) : các hàm đọc ghi bnode xuống file, và đọc ghi meta data để build tree.
 * [kvpair.h](./kvstore/include/kvpair.h) : định nghĩa struct key value.
-* [server.c](./kvstore/src/server.c) : hiện thực server, socket nonblocking, giao tiếp với btree.
-* [client.c](./kvstore/src/client.c) : hiện thực client, cung cấp bugdb-cli và autotest.
+* [server.c](./kvstore/server/server.c) : hiện thực server, socket nonblocking, giao tiếp với btree.
+* [client.c](./kvstore/client/client.c) : hiện thực client, cung cấp bugdb-cli và autotest.
 * [thpool.c](./kvstore/src/thpool.c) : hiện thực threadpool, message queue.
 * [bugdb.h](./kvstore/include/bugdb.h) : cung cấp interface giao tiếp với bugdb.
 * [bugdb.c](./kvstore/src/bugdb.c) : hiện thực kết nối server, process các method insert, search, delete.

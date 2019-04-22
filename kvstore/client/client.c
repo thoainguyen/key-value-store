@@ -3,7 +3,7 @@
 
 #define HOST "127.0.0.1"
 #define PORT "9899"
-#define DATASET 1000000
+#define DATASET 100
 
 int validate_command(char*);
 void user_test();
@@ -44,7 +44,7 @@ test:	printf("test insert: -i\n");
 		}
 	}
 	else{
-		printf("using `./server usertest` or `./server autotest`\n");
+		printf("using `./client usertest` or `./client autotest`\n");
 		exit(0);
 	}
 	return 0;

@@ -11,8 +11,20 @@ threadpool_t *pool;
 
 int main(int argc, char *argv[])
 {
+    if(argc != 2){
+        printf("using `./server -c` for create new o `./server -l` for load");
+        return 0;
+    }
+
+
     signal(SIGINT, signal_handler);
-	init_server(true);
+
+    if(!strcmp(argv[1],"-c")){
+        init_server(false);
+    }else{
+        init_server(true);
+    }
+	
 
     /* master file descriptor list for select() */
     fd_set master;
