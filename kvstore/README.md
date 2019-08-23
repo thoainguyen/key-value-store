@@ -22,12 +22,14 @@ $ make
 
 ```sh
 $ ./server
+using `./server -c` for create new or `./server -l` for load%
+$ ./server -c
 ```
 
 ### Client
 
 ```sh
-$ cd client
+$ cd ../../client
 $ mkdir cbuild && cd cbuild
 ```
 
@@ -42,6 +44,8 @@ $ make
 
 ```sh
 $ ./client
+using `./client usertest` or `./client autotest`
+$ ./client autotest
 ```
 
 

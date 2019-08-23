@@ -1,6 +1,6 @@
-# Hoc socket programming in C
+# Học socket programming trong C
 
-## Co ban
+## Cơ bản
 
 - `htonl` dùng cho network byte order convert tương tự cho `htons`, `ntohs`, `ntohl`.
 - một socket cũng được coi là một file trong unix, cũng được gán cho một giá trị file descriptor `int fd`, một socket được mô tả bởi một struct phức tạp:

@@ -14,7 +14,7 @@
 
 
 
-#include "bugdb.h"
+#include "kvstore.h"
 
 static pthread_mutex_t lock;
 
@@ -26,7 +26,7 @@ void *get_in_addr(struct sockaddr *sa){
 	return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
-int connect_bugdb(char* hostname, char* port){
+int connect_kvstore(char* hostname, char* port){
 	int sockfd, rv;  
 	struct addrinfo hints, *servinfo, *p;
 	char s[INET6_ADDRSTRLEN];
@@ -67,7 +67,7 @@ int connect_bugdb(char* hostname, char* port){
 }
 
 
-bool process_bugdb(int sockfd, char* buf){
+bool process_kvstore(int sockfd, char* buf){
 	int nbytes = 0;
 	bool ret = true;
 	pthread_mutex_lock(&lock);
@@ -89,35 +89,35 @@ bool process_bugdb(int sockfd, char* buf){
 	return ret;
 }
 
-void close_bugdb(int fd){
+void close_kvstore(int fd){
 	pthread_mutex_destroy(&lock);
 	close(fd);
 }
 
-char* get_bugdb(int fd, char* key){
+char* get_kvstore(int fd, char* key){
 	char *buf = (char*)malloc(BUF_LEN*sizeof(char));
 	sprintf(buf, "get %s", key);
-	if(!process_bugdb(fd, buf)){
+	if(!process_kvstore(fd, buf)){
 		free(buf);
 		buf = NULL;
 	}
 	return buf;
 }
 
-char* del_bugdb(int fd, char* key){
+char* del_kvstore(int fd, char* key){
 	char *buf = (char*)malloc(BUF_LEN*sizeof(char));
 	sprintf(buf, "del %s", key);
-	if(!process_bugdb(fd, buf)){
+	if(!process_kvstore(fd, buf)){
 		free(buf);
 		buf = NULL;
 	}
 	return buf;
 }
 
-char* set_bugdb(int fd, char* key, char* value){
+char* set_kvstore(int fd, char* key, char* value){
 	char *buf = (char*)malloc(BUF_LEN*sizeof(char));
 	sprintf(buf, "set %s %s", key, value);
-	if(!process_bugdb(fd, buf)){
+	if(!process_kvstore(fd, buf)){
 		free(buf);
 		buf = NULL;
 	}

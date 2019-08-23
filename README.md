@@ -9,7 +9,7 @@ Using btree disk base to implement key value store, build client server nonblock
 
 ## Implement Key value store
 
-> Follow [kvstore/README.md](kvstore/README.md) for run success
+B1. Follow [kvstore/README.md](kvstore/README.md) for run success
 
 * Project structure:
 
@@ -21,7 +21,7 @@ Using btree disk base to implement key value store, build client server nonblock
 ├── include
 │   ├── bnode.h
 │   ├── btree.h
-│   ├── bugdb.h
+│   ├── kvstore.h
 │   ├── kvpair.h
 │   ├── server.h
 │   ├── thpool.h
@@ -32,7 +32,7 @@ Using btree disk base to implement key value store, build client server nonblock
 └── src
     ├── bnode.c
     ├── btree.c
-    ├── bugdb.c
+    ├── kvstore.c
     └── thpool.c
 ```
 
@@ -42,30 +42,30 @@ Using btree disk base to implement key value store, build client server nonblock
 * [utils.h](./kvstore/include/utils.h) : các hàm đọc ghi bnode xuống file, và đọc ghi meta data để build tree.
 * [kvpair.h](./kvstore/include/kvpair.h) : định nghĩa struct key value.
 * [server.c](./kvstore/server/server.c) : hiện thực server, socket nonblocking, giao tiếp với btree.
-* [client.c](./kvstore/client/client.c) : hiện thực client, cung cấp bugdb-cli và autotest.
+* [client.c](./kvstore/client/client.c) : hiện thực client, cung cấp kvstore-cli và autotest.
 * [thpool.c](./kvstore/src/thpool.c) : hiện thực threadpool, message queue.
-* [bugdb.h](./kvstore/include/bugdb.h) : cung cấp interface giao tiếp với bugdb.
-* [bugdb.c](./kvstore/src/bugdb.c) : hiện thực kết nối server, process các method insert, search, delete.
+* [kvstore.h](./kvstore/include/kvstore.h) : cung cấp interface giao tiếp với kvstore.
+* [kvstore.c](./kvstore/src/kvstore.c) : hiện thực kết nối server, process các method insert, search, delete.
 
-## Dùng bugdb đối với bên thứ ba:
+## Dùng kvstore đối với bên thứ ba:
 
-* B1: chạy chương trình bugdb phía server
+* B2: chạy chương trình kvstore phía server
 
 ```sh
 kvstore/server/sbuild $ ./server
 ```
 
-* B2: import hai file **bugdb.h**, và **bugdb.c** vào project.
+* B3: import hai file **kvstore.h**, và **kvstore.c** vào project.
 
-* B3: kết nối tới database server:
+* B4: kết nối tới database server:
 
 ```c
 /* giá trị db dùng để truyền vào các interface method sau này, HOST, PORT là hostname và port của dbserver, nếu db < 0, thì có lỗi xảy ra*/
-int db = connect_bugdb(HOST, PORT);
+int db = connect_kvstore(HOST, PORT);
 /* trong đó key (char*) là khóa, value là giá trị trả về, trả về NULL nếu lỗi xảy ra.*/
-char *value = get_bugdb(db, key);
-/*hàm này xóa cặp key-value trong bugdb, trả về "OK" nếu thành công và "not exist!" nếu key không tồn tại*/
-char *result = del_bugdb(db, key);
-/*hàm này set giá trị key-value trong bugdb, nếu key đã tồn tại thì giá trị được ghi đè, hàm trả về "OK"*/
-char *result = set_bugdb(db,key,value);
+char *value = get_kvstore(db, key);
+/*hàm này xóa cặp key-value trong kvstore, trả về "OK" nếu thành công và "not exist!" nếu key không tồn tại*/
+char *result = del_kvstore(db, key);
+/*hàm này set giá trị key-value trong kvstore, nếu key đã tồn tại thì giá trị được ghi đè, hàm trả về "OK"*/
+char *result = set_kvstore(db,key,value);
 ```

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "bugdb.h"
+#include "kvstore.h"
 
 #define HOST "127.0.0.1"
 #define PORT "9899"
@@ -108,8 +108,8 @@ void user_test(){
 	int sockfd;
 	char buf[BUF_LEN];
 
-	if((sockfd = connect_bugdb(HOST, PORT)) < 0){
-		printf("(error) failed to connect bugdb\n");
+	if((sockfd = connect_kvstore(HOST, PORT)) < 0){
+		printf("(error) failed to connect kvstore\n");
 	}
 
     while(1){
@@ -120,7 +120,7 @@ void user_test(){
 		if(!validate_command(buf)){
 			continue;
 		}
-		if(!process_bugdb(sockfd, buf)){
+		if(!process_kvstore(sockfd, buf)){
 			exit(1);
 		}
 		printf("%s\n",buf);
@@ -131,13 +131,13 @@ void user_test(){
 void test_insert(){
 	char buf[100];
 	int sockfd;
-	if((sockfd = connect_bugdb(HOST, PORT)) < 0){
-		printf("(error) failed to connect bugdb\n");
+	if((sockfd = connect_kvstore(HOST, PORT)) < 0){
+		printf("(error) failed to connect kvstore\n");
 	}
 	for(int i = 0; i < DATASET; i ++ ){
 		sprintf(buf, "set %05d_key %05d_value", i, i);
 		printf("request: %s\n", buf);
-		if(process_bugdb(sockfd, buf)){
+		if(process_kvstore(sockfd, buf)){
 			printf("response: %s\n",buf);
 		}
 	}
@@ -145,13 +145,13 @@ void test_insert(){
 void test_delete(){
 	char buf[100];
 	int sockfd;
-	if((sockfd = connect_bugdb(HOST, PORT)) < 0){
-		printf("(error) failed to connect bugdb\n");
+	if((sockfd = connect_kvstore(HOST, PORT)) < 0){
+		printf("(error) failed to connect kvstore\n");
 	}
 	for(int i = 0; i < DATASET; i ++ ){
 		sprintf(buf, "del %05d_key", i);
 		printf("request: %s\n", buf);
-		if(process_bugdb(sockfd, buf)){
+		if(process_kvstore(sockfd, buf)){
 			printf("response: %s\n",buf);
 		}
 	}
@@ -159,13 +159,13 @@ void test_delete(){
 void test_search(){
 	char buf[100];
 	int sockfd;
-	if((sockfd = connect_bugdb(HOST, PORT)) < 0){
-		printf("(error) failed to connect bugdb\n");
+	if((sockfd = connect_kvstore(HOST, PORT)) < 0){
+		printf("(error) failed to connect kvstore\n");
 	}
 	for(int i = 0; i < DATASET; i ++ ){
 		sprintf(buf, "get %05d_key", i);
 		printf("request: %s\n", buf);
-		if(process_bugdb(sockfd, buf)){
+		if(process_kvstore(sockfd, buf)){
 			printf("response: %s\n",buf);
 		}
 	}
