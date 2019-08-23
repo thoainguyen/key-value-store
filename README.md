@@ -4,7 +4,7 @@ Using btree disk base to implement key value store, build client server nonblock
 
 ## Build knowledge
 
-> Note [linux system](./docs/note.md), [networking](./docs/network.md)
+> Note [linux system](./docs/kvstore-impl.md), [networking](./docs/network.md)
 
 
 ## Implement Key value store
