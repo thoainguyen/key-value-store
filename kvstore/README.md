@@ -1,4 +1,4 @@
-# KVS - (key value store fresher implementation)
+# Key Value Store
 
 > This project is implemented in c language base on CLRS course (Chapter 13 Btree)
 
