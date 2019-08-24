@@ -2,16 +2,18 @@
 
 Using btree disk base to implement key value store, build client server nonblocking I/O, threadpool, message queue.
 
-## Build knowledge
+Implement key value store sử dụng btree làm storage engine lưu trữ dữ liệu xuống đĩa, xây dựng server nonblocking I/O, dùng thread pool, message queue.
 
-> Note [linux system](./docs/kvstore-impl.md), [networking](./docs/network.md)
+## Xây dựng kiến thức
+
+> Ghi chú: [linux system](./docs/kvstore-impl.md), [networking](./docs/network.md)
 
 
-## Implement Key value store
+## Hướng dẫn cài đặt
 
-B1. Follow [kvstore/README.md](kvstore/README.md) for run success
+B0. Theo hướng dẫn [kvstore/README.md](kvstore/README.md) để chạy thành công
 
-* Project structure:
+* Cấu trúc project:
 
 ```sh
 .
@@ -47,17 +49,21 @@ B1. Follow [kvstore/README.md](kvstore/README.md) for run success
 * [kvstore.h](./kvstore/include/kvstore.h) : cung cấp interface giao tiếp với kvstore.
 * [kvstore.c](./kvstore/src/kvstore.c) : hiện thực kết nối server, process các method insert, search, delete.
 
-## Dùng kvstore đối với bên thứ ba:
+## Dùng kvstore đối với mã nguồn bên thứ ba:
 
-* B2: chạy chương trình kvstore phía server
+* B1: Đầu tiên, chạy chương trình kvstore phía server như ở trên, để cung cấp kvstore service.
+  * Có hai option `-c` và `-l`:
+    * Dùng `-c` khi muốn tạo mới dữ liệu
+    * Dùng `-l` khi muốn chạy kvstore trên dữ liệu cũ
 
 ```sh
 kvstore/server/sbuild $ ./server
+using `./server -c` for create new or `./server -l` for load%
 ```
 
-* B3: import hai file **kvstore.h**, và **kvstore.c** vào project.
+* B2: copy hai file **kvstore.h**, và **kvstore.c** vào project bên thứ ba.
 
-* B4: kết nối tới database server:
+* B3: Các API hỗ trợ:
 
 ```c
 /* giá trị db dùng để truyền vào các interface method sau này, HOST, PORT là hostname và port của dbserver, nếu db < 0, thì có lỗi xảy ra*/
@@ -68,4 +74,6 @@ char *value = get_kvstore(db, key);
 char *result = del_kvstore(db, key);
 /*hàm này set giá trị key-value trong kvstore, nếu key đã tồn tại thì giá trị được ghi đè, hàm trả về "OK"*/
 char *result = set_kvstore(db,key,value);
+/*hàm này dùng để đóng kết nối kvstore, xóa dữ liệu */
+void close_kvstore(int);
 ```
