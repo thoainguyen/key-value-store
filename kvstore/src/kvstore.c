@@ -67,7 +67,7 @@ int connect_kvstore(char* hostname, char* port){
 }
 
 
-bool process_kvstore(int sockfd, char* buf){
+bool kvstore_execute(int sockfd, char* buf){
 	int nbytes = 0;
 	bool ret = true;
 	pthread_mutex_lock(&lock);
@@ -94,30 +94,30 @@ void close_kvstore(int fd){
 	close(fd);
 }
 
-char* get_kvstore(int fd, char* key){
+char* kvstore_get(int fd, char* key){
 	char *buf = (char*)malloc(BUF_LEN*sizeof(char));
 	sprintf(buf, "get %s", key);
-	if(!process_kvstore(fd, buf)){
+	if(!kvstore_execute(fd, buf)){
 		free(buf);
 		buf = NULL;
 	}
 	return buf;
 }
 
-char* del_kvstore(int fd, char* key){
+char* kvstore_delete(int fd, char* key){
 	char *buf = (char*)malloc(BUF_LEN*sizeof(char));
 	sprintf(buf, "del %s", key);
-	if(!process_kvstore(fd, buf)){
+	if(!kvstore_execute(fd, buf)){
 		free(buf);
 		buf = NULL;
 	}
 	return buf;
 }
 
-char* set_kvstore(int fd, char* key, char* value){
+char* kvstore_set(int fd, char* key, char* value){
 	char *buf = (char*)malloc(BUF_LEN*sizeof(char));
 	sprintf(buf, "set %s %s", key, value);
-	if(!process_kvstore(fd, buf)){
+	if(!kvstore_execute(fd, buf)){
 		free(buf);
 		buf = NULL;
 	}

@@ -120,7 +120,7 @@ void user_test(){
 		if(!validate_command(buf)){
 			continue;
 		}
-		if(!process_kvstore(sockfd, buf)){
+		if(!kvstore_execute(sockfd, buf)){
 			exit(1);
 		}
 		printf("%s\n",buf);
@@ -137,7 +137,7 @@ void test_insert(){
 	for(int i = 0; i < DATASET; i ++ ){
 		sprintf(buf, "set %05d_key %05d_value", i, i);
 		printf("request: %s\n", buf);
-		if(process_kvstore(sockfd, buf)){
+		if(kvstore_execute(sockfd, buf)){
 			printf("response: %s\n",buf);
 		}
 	}
@@ -151,7 +151,7 @@ void test_delete(){
 	for(int i = 0; i < DATASET; i ++ ){
 		sprintf(buf, "del %05d_key", i);
 		printf("request: %s\n", buf);
-		if(process_kvstore(sockfd, buf)){
+		if(kvstore_execute(sockfd, buf)){
 			printf("response: %s\n",buf);
 		}
 	}
@@ -165,7 +165,7 @@ void test_search(){
 	for(int i = 0; i < DATASET; i ++ ){
 		sprintf(buf, "get %05d_key", i);
 		printf("request: %s\n", buf);
-		if(process_kvstore(sockfd, buf)){
+		if(kvstore_execute(sockfd, buf)){
 			printf("response: %s\n",buf);
 		}
 	}

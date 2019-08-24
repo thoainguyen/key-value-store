@@ -1,6 +1,6 @@
 # Key Value Store
 
-Implement key value store sử dụng btree làm storage engine lưu trữ dữ liệu xuống đĩa, xây dựng server nonblocking I/O, dùng thread pool, message queue.
+Key value store sử dụng btree làm cấu trúc dữ liệu cho database engine, xử lý bài toán reader/writer, xây dựng non-blocking I/O server, dùng thread pool, message queue,..
 
 ## Xây dựng kiến thức
 
@@ -64,14 +64,14 @@ using `./server -c` for create new or `./server -l` for load%
 * B3: Các API hỗ trợ:
 
 ```c
-/* giá trị db dùng để truyền vào các interface method sau này, HOST, PORT là hostname và port của dbserver, nếu db < 0, thì có lỗi xảy ra*/
+/* giá trị db dùng để truyền vào các method sau này, HOST, PORT là hostname và port của dbserver, nếu db < 0, thì có lỗi xảy ra*/
 int db = connect_kvstore(HOST, PORT);
-/* trong đó key (char*) là khóa, value là giá trị trả về, trả về NULL nếu lỗi xảy ra.*/
-char *value = get_kvstore(db, key);
-/*hàm này xóa cặp key-value trong kvstore, trả về "OK" nếu thành công và "not exist!" nếu key không tồn tại*/
-char *result = del_kvstore(db, key);
 /*hàm này set giá trị key-value trong kvstore, nếu key đã tồn tại thì giá trị được ghi đè, hàm trả về "OK"*/
-char *result = set_kvstore(db,key,value);
+char *result = kvstore_set(db, key, value);
+/* trong đó key (char*) là khóa, value là giá trị trả về, trả về NULL nếu lỗi xảy ra.*/
+char *value = kvstore_get(db, key);
+/*hàm này xóa cặp key-value trong kvstore, trả về "OK" nếu thành công và "not exist!" nếu key không tồn tại*/
+char *result = kvstore_delete(db, key);
 /*hàm này dùng để đóng kết nối kvstore*/
-void close_kvstore(int);
+void close_kvstore(db);
 ```

@@ -12,11 +12,11 @@
 
 int  connect_kvstore(char*,char*);
 void close_kvstore(int);
-bool process_kvstore(int,char*);
+bool kvstore_execute(int,char*);
 
-char *get_kvstore(int,char*);
-char *del_kvstore(int,char*);
-char *set_kvstore(int,char*,char*);
+char *kvstore_get(int,char*);
+char *kvstore_delete(int,char*);
+char *kvstore_set(int,char*,char*);
 
 
 #endif

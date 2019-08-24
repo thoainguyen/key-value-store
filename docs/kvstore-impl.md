@@ -27,7 +27,7 @@
   
   > https://en.wikipedia.org/wiki/B-tree
 
-* Ở bài tập này, em chọn BTree để thực hiện key-value store, theo đó mỗi node sẽ lưu trữ vị trí offset của nó, và vị trí offset của các node con của nó trên file, kích thước của mỗi node được điều chỉnh sao cho bằng với kích thước 1 block size (~ 4096 bytes).
+* Project này chọn BTree để thực hiện key-value store, theo đó mỗi node sẽ lưu trữ vị trí offset của nó, và vị trí offset của các node con của nó trên file, kích thước của mỗi node được điều chỉnh sao cho bằng với kích thước 1 block size (~ 4096 bytes).
 
 ### b. Kiến thức về Linux System
 
