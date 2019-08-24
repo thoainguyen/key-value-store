@@ -1,7 +1,5 @@
 # Key Value Store
 
-Using btree disk base to implement key value store, build client server nonblocking I/O, threadpool, message queue.
-
 Implement key value store sử dụng btree làm storage engine lưu trữ dữ liệu xuống đĩa, xây dựng server nonblocking I/O, dùng thread pool, message queue.
 
 ## Xây dựng kiến thức
@@ -74,6 +72,6 @@ char *value = get_kvstore(db, key);
 char *result = del_kvstore(db, key);
 /*hàm này set giá trị key-value trong kvstore, nếu key đã tồn tại thì giá trị được ghi đè, hàm trả về "OK"*/
 char *result = set_kvstore(db,key,value);
-/*hàm này dùng để đóng kết nối kvstore, xóa dữ liệu */
+/*hàm này dùng để đóng kết nối kvstore*/
 void close_kvstore(int);
 ```
