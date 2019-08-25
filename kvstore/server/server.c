@@ -185,7 +185,7 @@ char *process_request(char *request)
 {
 	char *response = (char *)malloc(BUF_LEN * sizeof(char));
 	char p1[ARG_L], p2[KEY_L], p3[VAL_L];
-	sscanf(request, "%s %s %s", p1, p2, p3);
+	sscanf(request, "%s %s %[^\n]", p1, p2, p3);
 	if (!strcmp(p1, "set"))
 	{
 		thread_safe_insert(tree, response, p2, p3);
